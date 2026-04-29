@@ -2,174 +2,42 @@
 <html lang="hu">
     <head>
         <meta charset="utf-8">
-        <title>Galaxis Expressz - Utazás a jövőbe</title>
-        <style>
-            :root{
-                --elsodlegesszin: #0f0c29;
-                --masodlagosszin: #48868a;
-                --szovegszin: #333;
-                --hatterszin: #f8f9fa;
-                --kszin: #1a1a1a;
-            }
-
-            body{
-                font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-                background-color: var(--hatterszin);
-                margin: 0;
-                padding: 0;
-                color: var(--szovegszin);
-                display: grid;
-                grid-template-rows: auto auto 1fr auto; 
-            }
-
-            header{
-                background: linear-gradient(90deg, #0f0c29, #302b63, #24243e);
-                color: white;
-                text-align: center;
-                padding: 2.5rem 1rem;
-                box-shadow: 0 4px 20px rgba(0, 242, 254, 0.3);
-                border-bottom: 2px solid var(--masodlagosszin);
-            }
-
-            header h1 {
-                margin: 0;
-                font-size: 2rem;
-                text-transform: uppercase;
-                letter-spacing: 4px;
-                text-shadow: 0 0 10px var(--masodlagosszin);
-            }
-
-            nav {
-                background-color: rgba(26, 26, 26, 0.95);
-                padding: 1.2rem;
-                display: flex;
-                justify-content: center;
-                flex-wrap: wrap;
-                gap: 20px;
-                backdrop-filter: blur(10px);
-                border-bottom: 1px solid #333;
-            }
-
-            nav a {
-                text-decoration: none;
-                color: var(--masodlagosszin);
-                padding: 8px 20px;
-                border: 1px solid var(--masodlagosszin);
-                border-radius: 4px;
-                font-weight: bold;
-                text-transform: uppercase;
-                font-size: 0.85rem;
-                transition: all 0.4s ease;
-            }
-
-            nav a:hover{
-                background-color: var(--masodlagosszin);
-                color: #000;
-                box-shadow: 0 0 15px var(--masodlagosszin);
-            }
-             
-            nav a.active {
-                background-color: var(--masodlagosszin);
-                color: #000;
-                box-shadow: 0 0 15px var(--masodlagosszin);
-            }
-
-            main {
-                flex: 1;
-                max-width: 1000px;
-                margin: 3rem auto;
-                padding: 0 20px;
-                text-align: center;
-            }
-
-            .hero {
-                background: var(--kszin);
-                padding: 4rem;
-                border-radius: 5px;
-                border-left: 5px solid var(--kszin);
-                box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-                margin-bottom: 3rem;
-            }
-
-            .hero h1 {
-                color: white;
-                font-size: 3rem;
-                margin-bottom: 15px;
-                text-shadow: 2px 2px var(--kszin);
-            }
-
-            .hero p {
-                font-size: 1.2rem;
-                color: #bbb;
-                line-height: 1.8;
-            }
-
-            .features {
-                display: flex;
-                justify-content: space-around;
-                gap: 30px;
-                flex-wrap: wrap;
-            }
-
-            .feature-card  {
-                background: var(--kszin);
-                color: #b62222;
-                padding: 25px;
-                border-radius: 8px;
-                flex: 1;
-                min-width: 260px;
-                border: 1px solid #333;
-                transition: transform 0.3s, border-color 0.3s;
-            }
-
-            .feature-card:hover {
-                transform: translateY(-10px);
-                border-color: var(--kszin);
-                box-shadow: 0 0 20px rgba(255, 0, 222, 0.2);
-            }
-
-            footer {
-                background-color: #000;
-                color: #666;
-                text-align: center;
-                padding: 2rem;
-                border-top: 1px solid #222;
-                margin-top: auto;
-            }
-
-            footer h2 {
-                margin: 5px 0;
-                font-size: 0.8rem;
-                letter-spacing: 2px;
-            }
-        </style>
+        <title>Stadion Start - Futball és Web</title>
+        <link rel="stylesheet" href="style.css">
     </head>
     <body>
         <header>
             <h1>Web programozás-1 Előadás Házi feladat</h1>
         </header>
         <nav>
-            <a href="index.html" class="active">Főoldal</a>
-            <a href="javascript.html" class="active">Javascript</a>
-            <a href="react.html" class="active">React</a>
-            <a href="spa.html" class="active">SPA</a>
-            <a href="fetchapi.html" class="active">Fetch</a>
-            <a href="axios.html" class="active">Axios</a>
-            <a href="oojs.html" class="active">OOJS</a>
+            <a href="index.html">Főoldal</a>
+            <a class="active" href="javascript.html">JavaScript CRUD</a>
+            <a href="react.html">React CRUD</a>
+            <a href="spa.html">SPA Menü</a>
+            <a href="fetchapi.html">Fetch API</a>
+            <a href="axios.html">Axios Menü</a>
+            <a href="oojs.html">OOJS Menü</a>
 
         </nav>
         <main>
             <section class="hero">
-                <h1>Galaxis Expressz</h1>
-                <p>Ahol az univerzum kezdődik, és a kaland soha nem ér véget.</p>
-                <img src="C:\Users\Elek Dániel\Documents\GitHub\WebProg-el-ad-s-beadand-\kepek\680811-space-vilagur-001.jpg" alt="Űrhajó az űrben" style="max-width: 100%; border-radius: 5px; margin-top: 10px;">
+                <h1>Bajnokok Ligája Fejlesztés</h1>
+                <p>"A kód gömbölyű, a meccs a 90. percig tart."</p>
             </section>
 
             <section class="features">
                 <div class="feature-card">
-                    <h2>Mars - A Vörös Sivatag</h3>
-                    <p>Látogassa meg az Olimposz-hegyet, a Naprendszer legmagasabb vulkánját! Most 20% kedvezmény a porvihar-szezon alatt.</p>
+                    <h2>Támadó Sor</h2>
+                    <p>React és Axios a gyors gólokért.</p>
                 </div>
+                <div class="feature-card">
+                <h2>Középpálya</h3>
+                <p>Javascript logika, ami összeköti a csapatot.</p>
+            </div>
+            <div class="feature-card">
+                <h2>Védelem</h3>
+                <p>Tiszta HTML és biztonságos Fetch API.</p>
+            </div>
             </section>
             
         </main>
