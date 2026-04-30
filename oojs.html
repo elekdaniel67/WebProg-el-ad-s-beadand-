@@ -9,7 +9,7 @@
             position: relative;
             width: 100%;
             height: 500px;
-            background-color: #2e7d32; /* Fűszín */
+            background-color: #2e7d32;
             border: 5px solid #ffffff;
             border-radius: 10px;
             overflow: hidden;
@@ -48,11 +48,8 @@
     <main>
         <section class="hero">
             <h1>Objektumorientált Grafika</h1>
-            <p>"Class-ok, öröklődés és a fizika találkozása a gyepen."</p>
+            <p>"Kattints és meglátod :D."</p>
         </section>
-        <div id="pitch-container">
-            <div class="instruction-overlay">Kattints a pályára a labdák kilövéséhez! ⚽</div>
-        </div>
     </main>
 
     <footer>
@@ -60,81 +57,81 @@
     </footer>
 
     <script>
-        class sportsz {
-            constructor(x, y, container) {
+       class PhysicalObject {
+            constructor(x, y) {
                 this.x = x;
                 this.y = y;
-                this.container = container;
                 this.element = document.createElement('div');
+                this.element.className = 'soccer-ball';
             }
-            initPosition() {
-                this.element.style.position = 'absolute';
-                this.element.style.left = `${this.x}px`;
-                this.element.style.top = `${this.y}px`;
-                this.element.style.fontSize = '30px';
-                this.element.style.userSelect = 'none';
+
+            // A kért metódus: hozzáadás a BODY-hoz
+            addToDocument() {
                 this.element.innerHTML = '⚽';
-                this.container.appendChild(this.element); 
+                // ITT VAN A KÉRT SOR:
+                document.body.appendChild(this.element);
             }
         }
 
-        class labda extends sportsz {
-            constructor(x, y, container) {
-                super(x, y, container);
-                this.size = 40;
-                this.speedY = Math.random() * -10 - 5; 
-                this.speedX = (Math.random() - 0.5) * 10;
-                this.gravity = 0.4;
-                this.bounce = -0.7;
+        class BouncingBall extends PhysicalObject {
+            constructor(x, y) {
+                super(x, y);
                 
-                this.render();
-            }
-            render() {
-                super.initPosition();
-                this.element.style.width = `${this.size}px`;
-                this.element.style.height = `${this.size}px`;
+                this.size = 40;
+                this.speedY = Math.random() * -15 - 5; 
+                this.speedX = (Math.random() - 0.5) * 15;
+                this.gravity = 0.6;
+                this.bounce = -0.7;
+
+                this.init();
             }
 
-            update() {
-                const rect = this.container.getBoundingClientRect();
-                
+            init() {
+
+                super.addToDocument();
+                this.updatePosition();
+            }
+
+            updatePosition() {
+                this.element.style.left = `${this.x}px`;
+                this.element.style.top = `${this.y}px`;
+            }
+
+            move() {
                 this.speedY += this.gravity;
                 this.x += this.speedX;
                 this.y += this.speedY;
-                if (this.y + this.size > rect.height) {
-                    this.y = rect.height - this.size;
+
+                if (this.y + this.size > window.innerHeight + window.scrollY) {
+                    this.y = (window.innerHeight + window.scrollY) - this.size;
                     this.speedY *= this.bounce;
                 }
 
-                if (this.x <= 0 || this.x + this.size >= rect.width) {
+              
+                if (this.x <= 0 || this.x + this.size >= window.innerWidth) {
                     this.speedX *= -1;
                 }
 
-                this.element.style.left = `${this.x}px`;
-                this.element.style.top = `${this.y}px`;
-                this.element.style.transform = `rotate(${this.x * 2}deg)`;
+                this.updatePosition();
+               
+                this.element.style.transform = `rotate(${this.x}deg)`;
             }
         }
 
-        const container = document.getElementById('pitch-container');
-        const balls = [];
+        const activeBalls = [];
 
-        container.addEventListener('mousedown', (e) => {
-            const rect = container.getBoundingClientRect();
-            // A konténeren belüli relatív koordináták kiszámítása
-            const mouseX = e.clientX - rect.left - 20;
-            const mouseY = e.clientY - rect.top - 20;
-            
-            const newBall = new labda(mouseX, mouseY, container);
-            balls.push(newBall);
+        document.addEventListener('mousedown', (event) => {
+            // Új objektum példányosítása
+            const ball = new BouncingBall(event.pageX - 20, event.pageY - 20);
+            activeBalls.push(ball);
         });
 
-        function gameLoop() {
-            balls.forEach(ball => ball.update());
-            requestAnimationFrame(gameLoop);
+        function animate() {
+            activeBalls.forEach(ball => ball.move());
+            requestAnimationFrame(animate);
         }
 
-        gameLoop();
+        animate();
     </script>
 </body>
 </html>
