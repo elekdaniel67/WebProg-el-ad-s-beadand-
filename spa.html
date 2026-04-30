@@ -1,180 +1,189 @@
 <!DOCTYPE html>
 <html lang="hu">
 <head>
-    <meta charset="utf-8">
-    <title>Stadion Start - SPA Menü</title>
+    <meta charset="UTF-8">
+    <title>SPA Menü</title>
+    <link rel="stylesheet" href="style.css">
     <style>
-        :root{
-            --elsodlegesszin: #0f0c29;
-            --masodlagosszin: #48868a;
-            --szovegszin: #333;
-            --hatterszin: #f8f9fa;
-            --kszin: #1a1a1a;
-        }
+                    :root{
+                --elsodlegesszin: #0f0c29;
+                --masodlagosszin: #48868a;
+                --szovegszin: #333;
+                --hatterszin: #f8f9fa;
+                --kszin: #1a1a1a;
+            }
 
-        body{
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--hatterszin);
-            margin: 0;
-            padding: 0;
-            color: var(--szovegszin);
-            display: grid;
-            grid-template-rows: auto auto 1fr auto; 
-            min-height: 100vh;
-        }
+            body{
+                font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+                background-color: var(--hatterszin);
+                margin: 0;
+                padding: 0;
+                color: var(--szovegszin);
+                display: grid;
+                grid-template-rows: auto auto 1fr auto; 
+            }
 
-        header{
-            background: linear-gradient(90deg, #0f0c29, #302b63, #24243e);
-            color: white;
-            text-align: center;
-            padding: 2.5rem 1rem;
-            box-shadow: 0 4px 20px rgba(0, 242, 254, 0.3);
-            border-bottom: 2px solid var(--masodlagosszin);
-        }
+            header{
+                background: linear-gradient(90deg, #0f0c29, #302b63, #24243e);
+                color: white;
+                text-align: center;
+                padding: 2.5rem 1rem;
+                box-shadow: 0 4px 20px rgba(0, 242, 254, 0.3);
+                border-bottom: 2px solid var(--masodlagosszin);
+            }
 
-        header h1 {
-            margin: 0;
-            font-size: 2rem;
-            text-transform: uppercase;
-            letter-spacing: 4px;
-            text-shadow: 0 0 10px var(--masodlagosszin);
-        }
+            header h1 {
+                margin: 0;
+                font-size: 2rem;
+                text-transform: uppercase;
+                letter-spacing: 4px;
+                text-shadow: 0 0 10px var(--masodlagosszin);
+            }
 
-        nav {
-            background-color: rgba(26, 26, 26, 0.95);
-            padding: 1.2rem;
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 20px;
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid #333;
-        }
+            nav {
+                background-color: rgba(26, 26, 26, 0.95);
+                padding: 1.2rem;
+                display: flex;
+                justify-content: center;
+                flex-wrap: wrap;
+                gap: 20px;
+                backdrop-filter: blur(10px);
+                border-bottom: 1px solid #333;
+            }
 
-        nav a {
-            text-decoration: none;
-            color: var(--masodlagosszin);
-            padding: 8px 20px;
-            border: 1px solid var(--masodlagosszin);
-            border-radius: 4px;
-            font-weight: bold;
-            text-transform: uppercase;
-            font-size: 0.85rem;
-            transition: all 0.4s ease;
-        }
+            nav a {
+                text-decoration: none;
+                color: var(--masodlagosszin);
+                padding: 8px 20px;
+                border: 1px solid var(--masodlagosszin);
+                border-radius: 4px;
+                font-weight: bold;
+                text-transform: uppercase;
+                font-size: 0.85rem;
+                transition: all 0.4s ease;
+            }
 
-        nav a:hover, nav a.active {
-            background-color: var(--masodlagosszin);
-            color: #000;
-            box-shadow: 0 0 15px var(--masodlagosszin);
-        }
+            nav a:hover{
+                background-color: var(--masodlagosszin);
+                color: #000;
+                box-shadow: 0 0 15px var(--masodlagosszin);
+            }
+             
+            nav a.active {
+                background-color: var(--masodlagosszin);
+                color: #000;
+                box-shadow: 0 0 15px var(--masodlagosszin);
+            }
 
-        main {
-            flex: 1;
-            max-width: 1000px;
-            margin: 3rem auto;
-            padding: 30px;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.1);
-            text-align: center;
-            position: relative;
-        }
+            main {
+                flex: 1;
+                max-width: 1000px;
+                margin: 3rem auto;
+                padding: 0 20px;
+                text-align: center;
+            }
 
-        h2 {
-            color: var(--elsodlegesszin);
-            border-bottom: 2px solid var(--masodlagosszin);
-            padding-bottom: 10px;
-            display: inline-block;
-        }
+            .hero {
+                background: var(--kszin);
+                padding: 4rem;
+                border-radius: 5px;
+                border-left: 5px solid var(--kszin);
+                box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+                margin-bottom: 3rem;
+            }
 
-        .button-container {
-            margin: 20px 0;
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            position: relative;
-            z-index: 100;
-        }
+            .hero h1 {
+                color: white;
+                font-size: 3rem;
+                margin-bottom: 15px;
+                text-shadow: 2px 2px var(--kszin);
+            }
 
-        button {
-            background: var(--elsodlegesszin);
-            color: white;
-            border: 1px solid var(--masodlagosszin);
-            padding: 12px 25px;
-            border-radius: 4px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.3s;
-            text-transform: uppercase;
-        }
+            .hero p {
+                font-size: 1.2rem;
+                color: #bbb;
+                line-height: 1.8;
+            }
 
-        button:hover {
-            background: var(--masodlagosszin);
-            color: #000;
-            box-shadow: 0 0 10px var(--masodlagosszin);
-        }
+            .features {
+                display: flex;
+                justify-content: space-around;
+                gap: 30px;
+                flex-wrap: wrap;
+            }
 
-       #appFrame { 
-            width: 100%;
-            height: 500px;
-            border: 2px solid var(--elsodlegesszin);
-            border-radius: 8px;
-            position: relative;
-            z-index: 1;         
-        }
+            .feature-card  {
+                background: var(--kszin);
+                color: #b62222;
+                padding: 25px;
+                border-radius: 8px;
+                flex: 1;
+                min-width: 260px;
+                border: 1px solid #333;
+                transition: transform 0.3s, border-color 0.3s;
+            }
 
-        footer {
-            background-color: #000;
-            color: #666;
-            text-align: center;
-            padding: 2rem;
-            border-top: 1px solid #222;
-        }
+            .feature-card:hover {
+                transform: translateY(-10px);
+                border-color: var(--kszin);
+                box-shadow: 0 0 20px rgba(255, 0, 222, 0.2);
+            }
 
-        iframe {
-            width: 100%;
-            height: 600px;
-            border: 2px solid var(--elsodlegesszin);
-            border-radius: 8px;
-            background: #0f0c29;
-            overflow: hidden;
-        }
-        
+            footer {
+                background-color: #000;
+                color: #666;
+                text-align: center;
+                padding: 2rem;
+                border-top: 1px solid #222;
+                margin-top: auto;
+            }
+
+            footer h2 {
+                margin: 5px 0;
+                font-size: 0.8rem;
+                letter-spacing: 2px;
+            }
     </style>
 </head>
 <body>
 
 <header>
-    <h1>Web programozás-1 SPA Alkalmazás</h1>
+    <h1>Web programozás-1 Előadás Házi feladat</h1>
 </header>
 
 <nav>
     <a href="index.html">Főoldal</a>
     <a href="javascript.html">JavaScript CRUD</a>
     <a href="react.html">React CRUD</a>
-    <a class="active" href="spa.html">SPA Menü</a>
+    <a href="spa.html">SPA Menü</a>
     <a href="fetchapi.html">Fetch API</a>
     <a href="axios.html">Axios Menü</a>
     <a href="oojs.html">OOJS Menü</a>
+
 </nav>
 
 <main>
-    <h2>Interaktív Alkalmazások</h2>
-    <p>Válassz egy modult az alábbi gombokkal!</p>
+    <h2>SPA alkalmazások</h2>
 
-    <div class="button-container">
-        <button onclick="loadApp('mem')">⚽ Memóriajáték</button>
-        <button onclick="loadApp('ttt')">🎮 Tic‑Tac‑Toe</button>
+    <div style="text-align:center; margin-bottom:20px;">
+        <button onclick="loadApp('mem')">Memóriajáték</button>
+        <button onclick="loadApp('ttt')">Tic‑Tac‑Toe</button>
     </div>
 
-    <iframe id="appFrame" name="appFrame"></iframe>
+    <iframe id="appFrame" style="width:100%; height:500px; border:1px solid #aaa;"></iframe>
 </main>
-
 <footer>
-    <p>Készítők: Fülöp Martin EMD87F, Elek Dániel XZN3PZ</p>
-</footer>
+        <p>Készítők: Fülöp Martin EMD87F, Elek Dániel XZN3PZ</p>
+    </footer>
+<script>
+function loadApp(which) {
+    if (which === "mem") {
+        document.getElementById("appFrame").src = "react/mem/dist/index.html";
+    } else if (which === "ttt") {
+        document.getElementById("appFrame").src = "react/ttt/dist/index.html";
+    }
+}
+</script>
 
-<script src="spa.js"></script>
 </body>
 </html>
