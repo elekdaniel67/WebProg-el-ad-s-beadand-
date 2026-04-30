@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stadion - Fetch API CRUD</title>
+    <style>
+        :root {
+            --elsodlegesszin: #0f0c29;
+            --masodlagosszin: #48868a;
+            --szovegszin: #333;
+            --hatterszin: #f8f9fa;
+            --kszin: #1a1a1a;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--hatterszin);
+            margin: 0;
+            padding: 0;
+            color: var(--szovegszin);
+            display: grid;
+            grid-template-rows: auto auto 1fr auto;
+            min-height: 100vh;
+        }
+
+        header {
+            background: linear-gradient(90deg, #0f0c29, #302b63, #24243e);
+            color: white;
+            text-align: center;
+            padding: 2.5rem 1rem;
+            box-shadow: 0 4px 20px rgba(0, 242, 254, 0.3);
+            border-bottom: 2px solid var(--masodlagosszin);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2rem;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            text-shadow: 0 0 10px var(--masodlagosszin);
+        }
+
+        nav {
+            background-color: rgba(26, 26, 26, 0.95);
+            padding: 1.2rem;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid #333;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--masodlagosszin);
+            padding: 8px 20px;
+            border: 1px solid var(--masodlagosszin);
+            border-radius: 4px;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            transition: all 0.4s ease;
+        }
+
+        nav a:hover, nav a.active {
+            background-color: var(--masodlagosszin);
+            color: #000;
+            box-shadow: 0 0 15px var(--masodlagosszin);
+        }
+
+        main {
+            max-width: 1000px;
+            margin: 3rem auto;
+            padding: 0 20px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .crud-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 30px;
+        }
+
+        .feature-card {
+            background: var(--kszin);
+            color: white;
+            padding: 25px;
+            border-radius: 8px;
+            border: 1px solid #333;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .feature-card h3 {
+            color: var(--masodlagosszin);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-top: 0;
+            border-bottom: 1px solid #333;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        label { display: block; margin: 15px 0 5px; font-size: 0.9rem; color: #bbb; }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            background: #222;
+            border: 1px solid #444;
+            border-radius: 4px;
+            color: white;
+            box-sizing: border-box;
+            margin-bottom: 15px;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--masodlagosszin);
+            color: #000;
+            border: none;
+            border-radius: 4px;
+            font-weight: bold;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-cancel { background-color: #444; color: white; display: none; margin-top: 10px; }
+
+        table { width: 100%; border-collapse: collapse; color: #ddd; }
+        th { text-align: left; padding: 12px; border-bottom: 2px solid var(--masodlagosszin); color: var(--masodlagosszin); font-size: 0.8rem; text-transform: uppercase; }
+        td { padding: 12px; border-bottom: 1px solid #222; }
+
+        .action-btn { padding: 5px 10px; border-radius: 4px; border: none; cursor: pointer; font-weight: bold; font-size: 0.75rem; text-transform: uppercase; margin-right: 5px; }
+        .btn-edit { background-color: var(--masodlagosszin); color: #000; }
+        .btn-delete { background-color: #b62222; color: white; }
+
+        footer {
+            background-color: #000;
+            color: #666;
+            text-align: center;
+            padding: 2rem;
+            border-top: 1px solid #222;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Stadion Bajnokság - Adatkezelés</h1>
+</header>
+
+<nav>
+    <a href="index.html">Főoldal</a>
+    <a href="javascript.html">JavaScript CRUD</a>
+    <a href="react.html">React CRUD</a>
+    <a href="spa.html">SPA Menü</a>
+    <a href="fetchapi.html" class="active">Fetch API</a>
+    <a href="axios.html">Axios Menü</a>
+    <a href="oojs.html">OOJS Menü</a>
+</nav>
+
+<main>
+    <div class="crud-grid">
+        <section class="feature-card">
+            <h3 id="formTitle">Csapat rögzítése</h3>
+            <form id="clubForm">
+                <input type="hidden" id="editId">
+                <label for="csapatnev">Csapat megnevezése</label>
+                <input type="text" id="csapatnev" required placeholder="Pl. Vasas FC">
+                <button type="submit" id="submitBtn" class="btn-submit">Hozzáadás</button>
+                <button type="button" id="cancelBtn" class="btn-submit btn-cancel" onclick="resetForm()">Mégse</button>
+            </form>
+        </section>
+
+        <section class="feature-card">
+            <h3>Bajnokság állása</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Csapatnév</th>
+                        <th>Műveletek</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                    <tr><td colspan="3" style="text-align:center;">Várakozás az adatokra...</td></tr>
+                </tbody>
+            </table>
+        </section>
+    </div>
+</main>
+
+<footer>
+    <h2>STADION PROJEKT - 2026</h2>
+    <p>Készítők: Fülöp Martin EMD87F, Elek Dániel XZN3PZ</p>
+</footer>
+
+<script src="C:\Users\Elek Dániel\Documents\GitHub\WebProg-el-ad-s-beadand-\klubbok.js"></script>
+</body>
+</html>
