@@ -1,0 +1,29 @@
+{
+  "posztok": [
+    {
+      "id": "1",
+      "nev": "bal oldali védő"
+    },
+    {
+      "id": "2",
+      "nev": "jobb oldali középpályás"
+    },
+    {
+      "id": "3",
+      "nev": "bal szélső"
+    },
+    {
+      "id": "9",
+      "nev": "kapus"
+    },
+    {
+      "id": "10",
+      "nev": "középcsatár"
+    },
+    {
+      "nev": "belső csatár",
+      "id": "nAATF1nkMUU"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}
