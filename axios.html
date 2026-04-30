@@ -1,150 +1,213 @@
 <!DOCTYPE html>
 <html lang="hu">
 <head>
-  <meta charset="UTF-8">
-  <title>Axios CRUD</title>
-      <link rel="stylesheet" href="style.css">
-      <style>
-                    :root{
-                --elsodlegesszin: #0f0c29;
-                --masodlagosszin: #48868a;
-                --szovegszin: #333;
-                --hatterszin: #f8f9fa;
-                --kszin: #1a1a1a;
-            }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>⚽ Stadion Manager - Bajnokok Ligája</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <style>
+     .crud-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 30px;
+            margin-top: 2rem;
+            text-align: left;
+        }
 
-            body{
-                font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-                background-color: var(--hatterszin);
-                margin: 0;
-                padding: 0;
-                color: var(--szovegszin);
-                display: grid;
-                grid-template-rows: auto auto 1fr auto; 
-            }
+        @media (max-width: 800px) {
+            .crud-grid { grid-template-columns: 1fr; }
+        }
 
-            header{
-                background: linear-gradient(90deg, #0f0c29, #302b63, #24243e);
-                color: white;
-                text-align: center;
-                padding: 2.5rem 1rem;
-                box-shadow: 0 4px 20px rgba(0, 242, 254, 0.3);
-                border-bottom: 2px solid var(--masodlagosszin);
-            }
+        .card {
+            background: var(--kszin);
+            padding: 30px;
+            border-radius: 8px;
+            border: 1px solid #333;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
 
-            header h1 {
-                margin: 0;
-                font-size: 2rem;
-                text-transform: uppercase;
-                letter-spacing: 4px;
-                text-shadow: 0 0 10px var(--masodlagosszin);
-            }
+        h2, h3 { color: var(--masodlagosszin); text-transform: uppercase; letter-spacing: 2px; }
 
-            nav {
-                background-color: rgba(26, 26, 26, 0.95);
-                padding: 1.2rem;
-                display: flex;
-                justify-content: center;
-                flex-wrap: wrap;
-                gap: 20px;
-                backdrop-filter: blur(10px);
-                border-bottom: 1px solid #333;
-            }
+        label { display: block; margin-bottom: 8px; color: #bbb; font-size: 0.9rem; }
 
-            nav a {
-                text-decoration: none;
-                color: var(--masodlagosszin);
-                padding: 8px 20px;
-                border: 1px solid var(--masodlagosszin);
-                border-radius: 4px;
-                font-weight: bold;
-                text-transform: uppercase;
-                font-size: 0.85rem;
-                transition: all 0.4s ease;
-            }
+        input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            background: #222;
+            border: 1px solid #444;
+            border-radius: 4px;
+            color: white;
+            box-sizing: border-box;
+            transition: border-color 0.3s;
+        }
 
-            nav a:hover{
-                background-color: var(--masodlagosszin);
-                color: #000;
-                box-shadow: 0 0 15px var(--masodlagosszin);
-            }
-             
-            nav a.active {
-                background-color: var(--masodlagosszin);
-                color: #000;
-                box-shadow: 0 0 15px var(--masodlagosszin);
-            }
+        input:focus {
+            outline: none;
+            border-color: var(--masodlagosszin);
+            box-shadow: 0 0 10px rgba(72, 134, 138, 0.2);
+        }
 
-            main {
-                flex: 1;
-                max-width: 1000px;
-                margin: 3rem auto;
-                padding: 0 20px;
-                text-align: center;
-            }
+        .btn-primary {
+            background: var(--masodlagosszin);
+            color: black;
+            border: none;
+            padding: 12px 20px;
+            font-weight: bold;
+            text-transform: uppercase;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s;
+            border-radius: 4px;
+        }
 
-            .hero {
-                background: var(--kszin);
-                padding: 4rem;
-                border-radius: 5px;
-                border-left: 5px solid var(--kszin);
-                box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-                margin-bottom: 3rem;
-            }
+        .btn-primary:hover {
+            box-shadow: 0 0 20px var(--masodlagosszin);
+            transform: scale(1.02);
+        }
 
-            .hero h1 {
-                color: white;
-                font-size: 3rem;
-                margin-bottom: 15px;
-                text-shadow: 2px 2px var(--kszin);
-            }
+        .btn-cancel {
+            background: transparent;
+            color: #666;
+            border: 1px solid #444;
+            margin-top: 10px;
+            display: none;
+        }
 
-            .hero p {
-                font-size: 1.2rem;
-                color: #bbb;
-                line-height: 1.8;
-            }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #111;
+            border-radius: 8px;
+            overflow: hidden;
+        }
 
-            .features {
-                display: flex;
-                justify-content: space-around;
-                gap: 30px;
-                flex-wrap: wrap;
-            }
+        th {
+            background: #1a1a1a;
+            color: var(--masodlagosszin);
+            padding: 15px;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            border-bottom: 2px solid #333;
+        }
 
-            .feature-card  {
-                background: var(--kszin);
-                color: #b62222;
+        td { padding: 15px; border-bottom: 1px solid #5a5151; color: #ddd; }
+
+        .action-btn {
+            padding: 6px 12px;
+            margin-right: 5px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.75rem;
+            border: none;
+            transition: 0.3s;
+        }
+
+        .btn-edit { background: #f39c12; color: black; }
+        .btn-delete { background: #e74c3c; color: white; }
+        .action-btn:hover { opacity: 0.8; transform: translateY(-2px); }
+        #form {
+                background: #ffffff;
                 padding: 25px;
                 border-radius: 8px;
-                flex: 1;
-                min-width: 260px;
-                border: 1px solid #333;
-                transition: transform 0.3s, border-color 0.3s;
+                margin-bottom: 30px;
+                border: 1px solid #ddd;
+                text-align: left;
+                max-width: 600px;
+                margin-left: auto;
+                margin-right: auto;
+                box-shadow: 0 4px 10px rgba(0,0,0,0.05);
             }
 
-            .feature-card:hover {
-                transform: translateY(-10px);
-                border-color: var(--kszin);
-                box-shadow: 0 0 20px rgba(255, 0, 222, 0.2);
+            #form h3 {
+                margin-top: 0;
+                color: var(--elsodlegesszin);
+                border-bottom: 2px solid var(--masodlagosszin);
+                padding-bottom: 10px;
             }
 
-            footer {
-                background-color: #000;
-                color: #666;
-                text-align: center;
-                padding: 2rem;
-                border-top: 1px solid #222;
-                margin-top: auto;
+            #form label {
+                display: block;
+                margin-top: 12px;
+                font-weight: bold;
+                color: var(--elsodlegesszin);
             }
 
-            footer h2 {
-                margin: 5px 0;
+            #form input {
+                width: 100%;
+                padding: 10px;
+                margin-top: 5px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                box-sizing: border-box;
+                font-size: 1rem;
+            }
+
+            button {
+                margin-top: 15px;
+                padding: 10px 25px;
+                background-color: var(--elsodlegesszin);
+                color: white;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+                font-weight: bold;
+                transition: background 0.3s ease;
+            }
+
+            button:hover {
+                background-color: var(--masodlagosszin);
+                color: #000;
+            }
+
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-top: 20px;
+                background: white;
+            }
+
+            th {
+                background: var(--elsodlegesszin);
+                color: white;
+                padding: 15px;
+                text-transform: uppercase;
+                font-size: 0.85rem;
+            }
+
+            td {
+                padding: 12px;
+                border-bottom: 1px solid #ddd;
+                text-align: left;
+            }
+
+            tr:nth-child(even) {
+                background-color: #f9f9f9;
+            }
+
+            tr:hover {
+                background-color: #f1f8f9;
+            }
+
+            .btn-table {
+                padding: 5px 12px;
                 font-size: 0.8rem;
-                letter-spacing: 2px;
+                margin: 2px;
             }
-      </style>
 
+            .delete-btn {
+                background-color: #b62222;
+            }
+
+            .delete-btn:hover {
+                background-color: #8b1a1a;
+                color: white;
+            }</style>
 </head>
 <body>
     <header>
@@ -161,14 +224,94 @@
 
         </nav>
 
-  <h1>Axios CRUD</h1>
-  <p>Crud alkalmazás megnyitása:</p>
+    <div id="root"></div>
 
-  <a href="react/axiosapp/dist/index.html">CRUD megnyitása</a>
+    <script type="text/babel">
+        const { useState, useEffect } = React;
 
-  <footer>
+        const API = "D:\f\htdocs\foci_backend"; 
+
+        function App() {
+            const [jatekosok, setJatekosok] = useState([]);
+            const [form, setForm] = useState({ mezszam: '', utonev: '', vezeteknev: '', szulido: '', ertek: '' });
+            const [szerkesztettID, setSzerkesztettID] = useState(null);
+
+            // LISTÁZÁS (Read)
+            const betolt = () => {
+                axios.get(API + "datab.php")
+                    .then(res => setJatekosok(res.data))
+                    .catch(err => console.error("Hiba a letöltéskor:", err));
+            };
+
+            useEffect(() => { betolt(); }, []);
+
+            const mentes = () => {
+                const celFajl = szerkesztettID ? "frissit.php" : "csinal.php";
+                const kuldendoAdat = szerkesztettID ? { ...form, id: szerkesztettID } : form;
+
+                axios.post(API + celFajl, kuldendoAdat).then(() => {
+                    setForm({ mezszam: '', utonev: '', vezeteknev: '', szulido: '', ertek: '' });
+                    setSzerkesztettID(null);
+                    betolt();
+                });
+            };
+
+            const torles = (id) => {
+                if(confirm("Biztosan eladod ezt a játékost?")) {
+                    axios.post(API + "torles.php", { id }).then(() => betolt());
+                }
+            };
+
+            const szerkesztes = (j) => {
+                setSzerkesztettID(j.id);
+                setForm(j);
+            };
+
+            return (
+                <div className="container">
+                    <div className="header">
+                        <h1>⚽ Stadion Manager 2026</h1>
+                        <p>Keret menedzsment és átigazolások</p>
+                    </div>
+
+                    <div className="admin-card">
+                        <h3>{szerkesztettID ? "Játékos adatainak módosítása" : "Új játékos szerződtetése"}</h3>
+                        <div className="input-group">
+                            <input placeholder="Mezszám" type="number" value={form.mezszam} onChange={e => setForm({...form, mezszam: e.target.value})} />
+                            <input placeholder="Vezetéknév" value={form.vezeteknev} onChange={e => setForm({...form, vezeteknev: e.target.value})} />
+                            <input placeholder="Utónév" value={form.utonev} onChange={e => setForm({...form, utonev: e.target.value})} />
+                            <input placeholder="Születés (éééé-hh-nn)" value={form.szulido} onChange={e => setForm({...form, szulido: e.target.value})} />
+                            <input placeholder="Érték (ezer €)" type="number" value={form.ertek} onChange={e => setForm({...form, ertek: e.target.value})} />
+                        </div>
+                        <button className="btn-save" onClick={mentes}>
+                            {szerkesztettID ? "ADATOK FRISSÍTÉSE" : "IGAZOLÁS RÖGZÍTÉSE"}
+                        </button>
+                        {szerkesztettID && <button onClick={() => {setSzerkesztettID(null); setForm({mezszam:'',utonev:'',vezeteknev:'',szulido:'',ertek:''})}} style={{width:'100%', marginTop: '5px', cursor:'pointer'}}>Mégse</button>}
+                    </div>
+
+                    <div className="player-grid">
+                        {jatekosok.map(j => (
+                            <div className="player-card" key={j.id}>
+                                <div className="mezszam">#{j.mezszam}</div>
+                                <h3 style={{margin: '0'}}>{j.vezeteknev} {j.utonev}</h3>
+                                <p style={{color: '#666', fontSize: '0.9rem', margin: '5px 0'}}>🎂 {j.szulido}</p>
+                                <p style={{fontWeight: 'bold', color: '#1a472a', fontSize: '1.2rem'}}>{j.ertek} 000 €</p>
+                                <div className="actions">
+                                    <button className="btn-action" onClick={() => szerkesztes(j)}>✏️</button>
+                                    <button className="btn-action" onClick={() => torles(j.id)}>🗑️</button>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+    <footer>
         <p>Készítők: Fülöp Martin EMD87F, Elek Dániel XZN3PZ</p>
     </footer>
-
 </body>
 </html>
