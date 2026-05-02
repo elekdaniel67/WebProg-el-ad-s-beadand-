@@ -47,6 +47,8 @@ function App() {
           <a href="#" className="active">REACT CRUD</a>
           <a href="../../spa.html">SPA MENÜ</a>
           <a href="../../fetchapi.html">FETCH API</a>
+          <a href="axios.html">Axios Menü</a>
+          <a href="oojs.html">OOJS Menü</a>
       </nav>
 
       <main>
