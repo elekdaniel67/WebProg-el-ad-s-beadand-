@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="utf-8">
+    <title>Stadion Start - OOJS Grafika</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        #pitch-container {
+            position: relative;
+            width: 100%;
+            height: 500px;
+            background-color: #2e7d32;
+            border: 5px solid #ffffff;
+            border-radius: 10px;
+            overflow: hidden;
+            cursor: crosshair;
+            margin-top: 20px;
+        }
+
+        .instruction-overlay {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            pointer-events: none;
+            z-index: 10;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Web programozás-1 Előadás Házi feladat</h1>
+    </header>
+
+    <nav>
+        <a href="index.html">Főoldal</a>
+        <a href="javascript.html">JavaScript CRUD</a>
+        <a href="react-crud/react.html">React CRUD</a>
+        <a href="spa.html">SPA Menü</a>
+        <a href="fetchapi.html">Fetch API</a>
+        <a href="axios.html">Axios Menü</a>
+        <a href="oojs.html" class="active">OOJS Menü</a>
+    </nav>
+
+    <main>
+        <section class="hero">
+            <h1>Objektumorientált Grafika</h1>
+            <p>"Kattints és meglátod :D."</p>
+        </section>
+    </main>
+
+    <footer>
+        <p>Készítők: Fülöp Martin EMD87F, Elek Dániel XZN3PZ</p>
+    </footer>
+
+    <script>
+       class PhysicalObject {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+                this.element = document.createElement('div');
+                this.element.className = 'soccer-ball';
+            }
+
+            // A kért metódus: hozzáadás a BODY-hoz
+            addToDocument() {
+                this.element.innerHTML = '⚽';
+                // ITT VAN A KÉRT SOR:
+                document.body.appendChild(this.element);
+            }
+        }
+
+        class BouncingBall extends PhysicalObject {
+            constructor(x, y) {
+                super(x, y);
+                
+                this.size = 40;
+                this.speedY = Math.random() * -15 - 5; 
+                this.speedX = (Math.random() - 0.5) * 15;
+                this.gravity = 0.6;
+                this.bounce = -0.7;
+
+                this.init();
+            }
+
+            init() {
+
+                super.addToDocument();
+                this.updatePosition();
+            }
+
+            updatePosition() {
+                this.element.style.left = `${this.x}px`;
+                this.element.style.top = `${this.y}px`;
+            }
+
+            move() {
+                this.speedY += this.gravity;
+                this.x += this.speedX;
+                this.y += this.speedY;
+
+                if (this.y + this.size > window.innerHeight + window.scrollY) {
+                    this.y = (window.innerHeight + window.scrollY) - this.size;
+                    this.speedY *= this.bounce;
+                }
+
+              
+                if (this.x <= 0 || this.x + this.size >= window.innerWidth) {
+                    this.speedX *= -1;
+                }
+
+                this.updatePosition();
+               
+                this.element.style.transform = `rotate(${this.x}deg)`;
+            }
+        }
+
+        const activeBalls = [];
+
+        document.addEventListener('mousedown', (event) => {
+            // Új objektum példányosítása
+            const ball = new BouncingBall(event.pageX - 20, event.pageY - 20);
+            activeBalls.push(ball);
+        });
+
+        function animate() {
+            activeBalls.forEach(ball => ball.move());
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+    </script>
+</body>
+</html>

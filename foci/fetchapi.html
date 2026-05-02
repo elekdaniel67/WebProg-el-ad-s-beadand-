@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Foci Fetch API</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .crud-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 30px;
+            margin-top: 2rem;
+            text-align: left;
+        }
+
+        @media (max-width: 800px) {
+            .crud-grid { grid-template-columns: 1fr; }
+        }
+
+        .card {
+            background: var(--kszin);
+            padding: 30px;
+            border-radius: 8px;
+            border: 1px solid #333;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        h2, h3 { color: var(--masodlagosszin); text-transform: uppercase; letter-spacing: 2px; }
+
+        label { display: block; margin-bottom: 8px; color: #bbb; font-size: 0.9rem; }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            background: #222;
+            border: 1px solid #444;
+            border-radius: 4px;
+            color: white;
+            box-sizing: border-box;
+            transition: border-color 0.3s;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--masodlagosszin);
+            box-shadow: 0 0 10px rgba(72, 134, 138, 0.2);
+        }
+
+        .btn-primary {
+            background: var(--masodlagosszin);
+            color: black;
+            border: none;
+            padding: 12px 20px;
+            font-weight: bold;
+            text-transform: uppercase;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s;
+            border-radius: 4px;
+        }
+
+        .btn-primary:hover {
+            box-shadow: 0 0 20px var(--masodlagosszin);
+            transform: scale(1.02);
+        }
+
+        .btn-cancel {
+            background: transparent;
+            color: #666;
+            border: 1px solid #444;
+            margin-top: 10px;
+            display: none;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #111;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th {
+            background: #1a1a1a;
+            color: var(--masodlagosszin);
+            padding: 15px;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            border-bottom: 2px solid #333;
+        }
+
+        td { padding: 15px; border-bottom: 1px solid #222; color: #ddd; }
+
+        .action-btn {
+            padding: 6px 12px;
+            margin-right: 5px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.75rem;
+            border: none;
+            transition: 0.3s;
+        }
+
+        .btn-edit { background: #f39c12; color: black; }
+        .btn-delete { background: #e74c3c; color: white; }
+        .action-btn:hover { opacity: 0.8; transform: translateY(-2px); }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Web programozás-1 Előadás Házi feladat</h1>
+    </header>
+
+    <nav>
+            <a href="index.html">Főoldal</a>
+            <a href="javascript.html">JavaScript CRUD</a>
+            <a href="react-crud/react.html">React CRUD</a>
+            <a href="spa.html">SPA Menü</a>
+            <a href="fetchapi.html">Fetch API</a>
+            <a href="axios.html">Axios Menü</a>
+            <a href="oojs.html">OOJS Menü</a>
+    </nav>
+
+    <main>
+        <section class="hero">
+            <h1>Foci Posztok</h1>
+            <p>Adatkezelés Fetch API segítségével a <strong>poszt.txt</strong> forrás alapján.</p>
+        </section>
+
+        <div class="crud-grid">
+            <div class="card">
+                <h3 id="formTitle">Új Poszt Felvétele</h3>
+                <form id="posztForm">
+                    <input type="hidden" id="editId">
+                    <label for="posztNev">Megnevezés:</label>
+                    <input type="text" id="posztNev" placeholder="pl. belső középpályás" required>
+                    
+                    <button type="submit" id="submitBtn" class="btn-primary">Hozzáadás</button>
+                    <button type="button" id="cancelBtn" class="btn-primary btn-cancel" onclick="resetForm()">Mégse</button>
+                </form>
+            </div>
+            <div class="card" style="padding: 0; overflow: hidden;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Megnevezés</th>
+                            <th>Műveletek</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody"></tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>Készítők: Fülöp Martin EMD87F, Elek Dániel XZN3PZ</p>
+        
+    </footer>
+
+   <script>
+    const apiUrl = '[http://edfm.nhely.hu/foci/](http://edfm.nhely.hu/foci/)';
+
+    async function loadData() {
+        try {
+            console.log("Lekérés:", apiUrl + "datab.php"); 
+            const res = await fetch(apiUrl + "datab.php");
+            if (!res.ok) throw new Error("Szerver válasza: " + res.status);
+
+            const data = await res.json();
+            const tbody = document.getElementById('tableBody');
+            tbody.innerHTML = '';
+
+            data.forEach(item => {
+                tbody.innerHTML += `
+                <tr>
+                    <td>${item.id}</td>
+                    <td>${item.vezeteknev} ${item.utonev}</td>
+                    <td>
+                        <button class="action-btn btn-edit" onclick="editMode('${item.id}', '${item.vezeteknev}')">Módosít</button>
+                        <button class="action-btn btn-delete" onclick="deleteItem('${item.id}')">Töröl</button>
+                    </td>
+                </tr>`;
+            });
+        } catch (err) {
+            console.error("Hiba a betöltéskor:", err);
+        }
+    }
+
+    document.getElementById('posztForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const id = document.getElementById('editId').value;
+        const nev = document.getElementById('posztNev').value;
+        
+        const celFajl = id ? 'frissit.php' : 'csinal.php';
+        const bodyAdat = id ? { id, vezeteknev: nev } : { vezeteknev: nev };
+
+        try {
+            await fetch(apiUrl + celFajl, {
+                method: 'POST', 
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(bodyAdat)
+            });
+            resetForm();
+            loadData();
+        } catch (err) {
+            console.error("Hiba a mentésnél:", err);
+        }
+    });
+
+    async function deleteItem(id) {
+        if (confirm('Biztosan törölni szeretnéd?')) {
+            try {
+                await fetch(apiUrl + "torles.php", { 
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id }) 
+                });
+                loadData();
+            } catch (err) {
+                console.error("Hiba a törlésnél:", err);
+            }
+        }
+    }
+
+    function editMode(id, nev) {
+        document.getElementById('editId').value = id;
+        document.getElementById('posztNev').value = nev; 
+        document.getElementById('formTitle').innerText = 'Poszt szerkesztése';
+        document.getElementById('submitBtn').innerText = 'Mentés';
+        document.getElementById('cancelBtn').style.display = 'block';
+    }
+
+    function resetForm() {
+        document.getElementById('posztForm').reset();
+        document.getElementById('editId').value = '';
+        document.getElementById('formTitle').innerText = 'Új Poszt Felvétele';
+        document.getElementById('submitBtn').innerText = 'Hozzáadás';
+        document.getElementById('cancelBtn').style.display = 'none';
+    }
+
+    loadData();
+</script>
+</body>
+</html>
