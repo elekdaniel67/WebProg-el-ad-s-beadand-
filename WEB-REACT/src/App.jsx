@@ -9,19 +9,21 @@ function App() {
   // 2. Input mezők állapota az új csapathoz
   const [ujNev, setUjNev] = useState("");
   const [ujVaros, setUjVaros] = useState("");
+  const [ujAlapitva, setUjAlapitva] = useState("");
 
   // CREATE: Új csapat hozzáadása
   const hozzaadas = () => {
-    if (ujNev === "" || ujVaros === "") return;
+    if (ujNev === "" || ujVaros === "" || ujAlapitva === "") return;
     const ujCsapat = {
       id: Date.now(),
       nev: ujNev,
       varos: ujVaros,
-      alapitva: 2024
+      alapitva: ujAlapitva,
     };
     setCsapatok([...csapatok, ujCsapat]);
-    setUjNev(""); // Mezők ürítése
+    setUjNev(""); 
     setUjVaros("");
+    setUjAlapitva("");
   };
 
   // DELETE: Csapat törlése
@@ -65,6 +67,12 @@ function App() {
               placeholder="Város" 
               value={ujVaros} 
               onChange={(e) => setUjVaros(e.target.value)} 
+            />
+            <input 
+              type="number" 
+              placeholder="Alapítás éve" 
+              value={ujAlapitva} 
+              onChange={(e) => setUjAlapitva(e.target.value)} 
             />
             <button className="nav-button" onClick={hozzaadas}>Hozzáadás</button>
           </div>
