@@ -236,7 +236,7 @@
             const [form, setForm] = useState({ mezszam: '', utonev: '', vezeteknev: '', szulido: '', ertek: '' });
             const [szerkesztettID, setSzerkesztettID] = useState(null);
 
-            // LISTÁZÁS (Read)
+            
             const betolt = () => {
                 axios.get(API + "datab.php")
                     .then(res => setJatekosok(res.data))
