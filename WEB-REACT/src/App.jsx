@@ -10,6 +10,7 @@ function App() {
   const [ujNev, setUjNev] = useState("");
   const [ujVaros, setUjVaros] = useState("");
   const [ujAlapitva, setUjAlapitva] = useState("");
+  const [szerkesztesId, setSzerkesztesId] = useState(null);
 
   // CREATE: Új csapat hozzáadása
   const hozzaadas = () => {
@@ -30,6 +31,28 @@ function App() {
   const torles = (id) => {
     setCsapatok(csapatok.filter(csapat => csapat.id !== id));
   };
+
+  const szerkesztes = (csapat) => {
+  setSzerkesztesId(csapat.id);
+  setUjNev(csapat.nev);
+  setUjVaros(csapat.varos);
+  setUjAlapitva(csapat.alapitva);
+};
+
+// UPDATE: A módosított adatok elmentése
+const mentes = () => {
+  setCsapatok(csapatok.map(csapat => 
+    csapat.id === szerkesztesId 
+    ? { ...csapat, nev: ujNev, varos: ujVaros, alapitva: ujAlapitva } 
+    : csapat
+  ));
+
+  setSzerkesztesId(null);
+  setUjNev("");
+  setUjVaros("");
+  setUjAlapitva("");
+};
+
 
   return (
     <div className="container">
@@ -74,7 +97,18 @@ function App() {
               value={ujAlapitva} 
               onChange={(e) => setUjAlapitva(e.target.value)} 
             />
-            <button className="nav-button" onClick={hozzaadas}>Hozzáadás</button>
+            {szerkesztesId ? (
+                <button 
+                  className="btn" 
+                  onClick={mentes} 
+                  style={{backgroundColor: '#48868a', color: 'white'}}
+                >
+                  Mentés
+                </button>
+              ) : (
+                <button  className="btn" onClick={hozzaadas}>Hozzáadás</button>
+              )}
+              
           </div>
 
           <table className="data-table">
@@ -93,11 +127,23 @@ function App() {
                   <td>{csapat.varos}</td>
                   <td>{csapat.alapitva}</td>
                   <td>
-                    <button className="delete-btn" onClick={() => torles(csapat.id)}>Törlés</button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
+                    {/* SZERKESZTÉS: */}
+          <button 
+            className="btn" 
+            style={{marginRight: '5px', fontSize: '12px', padding: '5px 10px'}} 
+            onClick={() => szerkesztes(csapat)}
+          >
+            Szerkesztés
+          </button>
+
+          {/* TÖRLÉS: */}
+          <button className="btn" onClick={() => torles(csapat.id)}>
+            Törlés
+          </button>
+           </td>
+          </tr>
+          ))}
+      </tbody>
           </table>
         </div>
       </main>

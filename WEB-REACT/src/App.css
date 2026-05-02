@@ -215,7 +215,7 @@
                 background: rgba(255, 255, 255, 0.05);
             }
 
-            .delete-btn {
+            .btn {
                 background: transparent;
                 border: 1px solid #e63946;
                 color: #e63946;
@@ -226,7 +226,7 @@
                 transition: all 0.3s;
             }
 
-            .delete-btn:hover {
+            .btn:hover {
                 background: #e63946;
                 color: white;
                 box-shadow: 0 0 10px rgba(230, 57, 70, 0.3);
