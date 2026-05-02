@@ -8,6 +8,7 @@
 
             html, body {
                 height: 100%;
+                margin: 0;
             }
 
             body{
@@ -75,11 +76,14 @@
             }
 
             main {
-                flex: 1;
+                flex: 1 0 auto;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
                 max-width: 1000px;
-                margin: 3rem auto;
-                padding: 0 20px;
-                text-align: center;
+                margin: 3rem auto 100px auto; 
+                padding: 20px;
+                width: 100%;
             }
 
             .hero {
@@ -134,7 +138,9 @@
                 text-align: center;
                 padding: 2rem;
                 border-top: 1px solid #222;
-                margin-top: auto;
+                position: fixed;
+                bottom: 0;
+                width: 100%;
             }
 
             footer h2 {
