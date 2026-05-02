@@ -4,11 +4,7 @@ import './App.css'
 
 function App() {
   // 1. Az NB1 adatbázis 
-  const [csapatok, setCsapatok] = useState([
-    { id: 1, nev: "Ferencváros", varos: "Budapest", alapitva: 1899 },
-    { id: 2, nev: "Puskás Akadémia", varos: "Felcsút", alapitva: 2005 },
-    { id: 3, nev: "Debreceni VSC", varos: "Debrecen", alapitva: 1902 }
-  ]);
+  const [csapatok, setCsapatok] = useState([]);
 
   // 2. Input mezők állapota az új csapathoz
   const [ujNev, setUjNev] = useState("");
